@@ -135,13 +135,14 @@ uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
                 
                 if ('\n' == c)
                 {
-                    state++;
+                    break;
                 }
                 else
                 {
                     temp += (char)c;
                 }
             }
+            /*
             else if(state == 1 )
             {
                 c = airSerial.read();
@@ -162,6 +163,7 @@ uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
                     break;
                 }   
             }
+            */
 
         }
     }
@@ -216,6 +218,10 @@ bool recvRetCommandFinished(uint32_t timeout)
     uint8_t c = 0;
     long start;
     int state = 0;
+
+    return true;
+    
+    /*
     
     start = millis();
     while (millis() - start <= timeout)
@@ -247,6 +253,8 @@ bool recvRetCommandFinished(uint32_t timeout)
 
         }
     }
+
+    */
 
     return ret;
 }
@@ -293,7 +301,7 @@ bool airInit(void)
                         if( event == AIR_CONNECT )
                         {
                             airDunoConnect = 1;
-                            //airSerial.print("Connect ok;");
+                            airSerial.print("FunctionsResponseSet(0);");
                             ret = true;
                         }
                         
