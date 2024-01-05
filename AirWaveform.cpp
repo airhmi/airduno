@@ -49,7 +49,7 @@ bool AirWaveform::Set_background_color_bco(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd += getObjName();
     cmd += ".bco=";
     cmd += buf;
@@ -77,7 +77,7 @@ bool AirWaveform::Set_grid_color_gdc(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd += getObjName();
     cmd += ".gdc=";
     cmd += buf;

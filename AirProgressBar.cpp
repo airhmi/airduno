@@ -41,7 +41,7 @@ uint32_t AirProgressBar::Set_Color(uint32_t value)
     char buf[10] = {0};
     String cmd;
     
-    utoa(value, buf, 10);
+    sprintf(buf,"%lu",value);
     cmd = "ProgressBarSet(\"";
     cmd += getObjName();
     cmd += "\",\"Color\",\"";

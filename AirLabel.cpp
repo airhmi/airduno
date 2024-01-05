@@ -224,7 +224,7 @@ uint32_t AirLabel::Set_fontColor(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd = "LabelSet(\"";
     cmd += getObjName();
     cmd += "\",\"Font_Color\",\"";

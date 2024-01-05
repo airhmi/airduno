@@ -39,7 +39,7 @@ uint32_t AirSlider::Set_Color(uint32_t value)
     char buf[10] = {0};
     String cmd;
     
-    utoa(value, buf, 10);
+    sprintf(buf,"%lu",value);
     cmd = "SliderSet(\"";
     cmd += getObjName();
     cmd += "\",\"Color\",\"";

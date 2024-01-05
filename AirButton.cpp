@@ -36,10 +36,11 @@ bool AirButton::setText(const char *buffer)
 
 bool AirButton::Set_background_color(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[30] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    //utoa(123456789, buf, 10);
+	sprintf(buf,"%lu",number);
     cmd = "ButtonSet(\"";
     cmd += getObjName();
     cmd += "\",\"Color\",\"";
@@ -54,7 +55,7 @@ bool AirButton::Set_background_colorTo(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd = "ButtonSet(\"";
     cmd += getObjName();
     cmd += "\",\"ColorTo\",\"";
@@ -70,7 +71,7 @@ bool AirButton::Set_press_background_color(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd = "ButtonSet(\"";
     cmd += getObjName();
     cmd += "\",\"Press_Color\",\"";
@@ -86,7 +87,7 @@ bool AirButton::Set_press_background_colorTo(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd = "ButtonSet(\"";
     cmd += getObjName();
     cmd += "\",\"Press_ColorTo\",\"";
@@ -101,7 +102,7 @@ bool AirButton::Set_pen_width(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd = "ButtonSet(\"";
     cmd += getObjName();
     cmd += "\",\"Pen_Width\",\"";
@@ -116,7 +117,7 @@ bool AirButton::Set_pen_color(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd = "ButtonSet(\"";
     cmd += getObjName();
     cmd += "\",\"Pen_Color\",\"";
@@ -174,7 +175,7 @@ bool AirButton::Set_font_color(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd = "ButtonSet(\"";
     cmd += getObjName();
     cmd += "\",\"Font_Color\",\"";

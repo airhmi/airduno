@@ -26,7 +26,7 @@ bool AirVariable::VarSeti(uint32_t value)
     char buf[10] = {0};
     String cmd;
     
-    utoa(value, buf, 10);
+    sprintf(buf,"%lu",value);
     cmd = "VarSet(\"";
     cmd += getObjName();
     cmd += "\",\"";
@@ -43,7 +43,7 @@ bool AirVariable::VarSetf(double value)
     char buf[10] = {0};
     String cmd;
     
-    utoa(value, buf, 10);
+    sprintf(buf,"%.04f",value);
     cmd = "VarSet(\"";
     cmd += getObjName();
     cmd += "\",\"";

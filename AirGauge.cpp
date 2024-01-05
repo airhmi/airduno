@@ -85,7 +85,7 @@ bool AirGauge::Set_color(uint32_t number)
     char buf[10] = {0};
     String cmd;
     
-    utoa(number, buf, 10);
+    sprintf(buf,"%lu",number);
     cmd = "GaugeSet(\"";
     cmd += getObjName();
     cmd += "\",\"Color\",\"";
