@@ -15,24 +15,17 @@
 
 #include "AirPage.h"
 
-AirPage::AirPage(uint8_t pid, uint8_t cid, const char *name)
-    :AirTouch(pid, cid, name)
+AirPage::AirPage()
+    :AirTouch(0, 0, 0)
 {
 }
 
-bool AirPage::show(void)
+bool AirPage::ChangeScreen(const char *buffer)
 {
-    uint8_t buffer[4] = {0};
-
-    const char *name = getObjName();
-    if (!name)
-    {
-        return false;
-    }
-    
-    String cmd = String("page ");
-    cmd += name;
-    sendCommand(cmd.c_str());
-    return recvRetCommandFinished();
+    String cmd;
+    cmd = "ChangeScreenSet(\"";
+    cmd += buffer;
+    cmd +="\");";
+	sendCommand(cmd.c_str());
+    return recvRetCommandFinished();    
 }
-

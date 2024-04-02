@@ -34,14 +34,14 @@ public: /* methods */
     /**
      * @copydoc AirObject::AirObject(uint8_t pid, uint8_t cid, const char *name);
      */
-    AirPage(uint8_t pid, uint8_t cid, const char *name);
+    AirPage();
     
     /**
      * Show itself. 
      * 
      * @return true if success, false for faileure.
      */
-    bool show(void);
+    bool ChangeScreen(const char *buffer);
 };
 /**
  * @}
