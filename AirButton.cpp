@@ -25,11 +25,11 @@ AirButton::AirButton( const char *name)
 bool AirButton::setText(const char *buffer)
 {
     String cmd;
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Text\",\"";
+    cmd += ",Text,";
     cmd += buffer;
-    cmd +="\");";
+    cmd +=");";
 	sendCommand(cmd.c_str());
     return recvRetCommandFinished();    
 }
@@ -41,11 +41,11 @@ bool AirButton::Set_background_color(uint32_t number)
     
     //utoa(123456789, buf, 10);
 	sprintf(buf,"%lu",number);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Color\",\"";
+    cmd += ",Color,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -56,11 +56,11 @@ bool AirButton::Set_background_colorTo(uint32_t number)
     String cmd;
     
     sprintf(buf,"%lu",number);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"ColorTo\",\"";
+    cmd += ",ColorTo,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -72,11 +72,11 @@ bool AirButton::Set_press_background_color(uint32_t number)
     String cmd;
     
     sprintf(buf,"%lu",number);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Press_Color\",\"";
+    cmd += ",Press_Color,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -88,11 +88,11 @@ bool AirButton::Set_press_background_colorTo(uint32_t number)
     String cmd;
     
     sprintf(buf,"%lu",number);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Press_ColorTo\",\"";
+    cmd += ",Press_ColorTo,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -103,11 +103,11 @@ bool AirButton::Set_pen_width(uint32_t number)
     String cmd;
     
     sprintf(buf,"%lu",number);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Pen_Width\",\"";
+    cmd += ",Pen_Width,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -118,11 +118,11 @@ bool AirButton::Set_pen_color(uint32_t number)
     String cmd;
     
     sprintf(buf,"%lu",number);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Pen_Color\",\"";
+    cmd += ",Pen_Color,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -131,11 +131,11 @@ bool AirButton::Set_pen_colorRGB(String buffer)
 {
     String cmd;
     
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Pen_Color\",\"";
+    cmd += ",Pen_Color,";
     cmd += buffer;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -146,11 +146,11 @@ bool AirButton::Set_font_size(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Font_Size\",\"";
+    cmd += ",Font_Size,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -160,11 +160,11 @@ bool AirButton::setFont(String buffer)
 {
     String cmd;
     
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"FontName\",\"";
+    cmd += ",FontName,";
     cmd += buffer;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -176,11 +176,11 @@ bool AirButton::Set_font_color(uint32_t number)
     String cmd;
     
     sprintf(buf,"%lu",number);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Font_Color\",\"";
+    cmd += ",Font_Color,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -190,11 +190,11 @@ bool AirButton::Set_font_colorRGB(String buffer)
 {
     String cmd;
     
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Font_Color\",\"";
+    cmd += ",Font_Color,";
     cmd += buffer;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -206,11 +206,11 @@ bool AirButton::Set_visible(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -221,11 +221,11 @@ bool AirButton::Set_active(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Active\",\"";
+    cmd += ",Active,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -236,11 +236,11 @@ bool AirButton::Set_left(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -252,11 +252,11 @@ bool AirButton::Set_top(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -267,11 +267,11 @@ bool AirButton::Set_width(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Width\",\"";
+    cmd += ",Width,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -282,11 +282,11 @@ bool AirButton::Set_height(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ButtonSet(\"";
+    cmd = "BtnS(";
     cmd += getObjName();
-    cmd += "\",\"Height\",\"";
+    cmd += ",Height,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -295,11 +295,11 @@ bool AirButton::Set_height(uint32_t number)
 uint16_t AirButton::getText(char *buffer, uint16_t len)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Text\",\"";
+    cmd += ",Text,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetString(buffer,len);
 }
@@ -318,11 +318,11 @@ uint32_t AirButton::getFont(char *buffer , int len)
 uint32_t AirButton::Get_background_color(uint32_t *number)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Color\",\"";
+    cmd += ",Color,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -330,11 +330,11 @@ uint32_t AirButton::Get_background_color(uint32_t *number)
 uint32_t AirButton::Get_press_background_color(uint32_t *number)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Press_Color\",\"";
+    cmd += ",Press_Color,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -342,11 +342,11 @@ uint32_t AirButton::Get_press_background_color(uint32_t *number)
 uint32_t AirButton::Get_font_color(uint32_t *number)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Font_Color\",\"";
+    cmd += ",Font_Color,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -354,11 +354,11 @@ uint32_t AirButton::Get_font_color(uint32_t *number)
 uint32_t AirButton::Get_left(uint32_t *number)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -367,11 +367,11 @@ uint32_t AirButton::Get_left(uint32_t *number)
 uint32_t AirButton::Get_top(uint32_t *number)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -379,11 +379,11 @@ uint32_t AirButton::Get_top(uint32_t *number)
 uint32_t AirButton::Get_width(uint32_t *number)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Width\",\"";
+    cmd += ",Width,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -391,11 +391,11 @@ uint32_t AirButton::Get_width(uint32_t *number)
 uint32_t AirButton::Get_height(uint32_t *number)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Height\",\"";
+    cmd += ",Height,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -403,11 +403,11 @@ uint32_t AirButton::Get_height(uint32_t *number)
 uint32_t AirButton::Get_visible(uint32_t *number)
 {
     String cmd;
-    cmd = "ButtonGet(\"";
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }

@@ -27,11 +27,11 @@ bool AirShape::Set_active(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ShapeSet(\"";
+    cmd = "ShapeSet(";
     cmd += getObjName();
-    cmd += "\",\"Active\",\"";
+    cmd += ",Active,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -42,11 +42,11 @@ bool AirShape::Set_left(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ShapeSet(\"";
+    cmd = "ShapeSet(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -58,11 +58,11 @@ bool AirShape::Set_top(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ShapeSet(\"";
+    cmd = "ShapeSet(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -73,11 +73,11 @@ bool AirShape::Set_width(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ShapeSet(\"";
+    cmd = "ShapeSet(";
     cmd += getObjName();
-    cmd += "\",\"Width\",\"";
+    cmd += ",Width,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -88,11 +88,11 @@ bool AirShape::Set_height(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ShapeSet(\"";
+    cmd = "ShapeSet(";
     cmd += getObjName();
-    cmd += "\",\"Height\",\"";
+    cmd += ",Height,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -103,11 +103,11 @@ bool AirShape::Set_height(uint32_t number)
 uint32_t AirShape::Get_left(uint32_t *number)
 {
     String cmd;
-    cmd = "ShapeGet(\"";
+    cmd = "ShapeGet(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -116,11 +116,11 @@ uint32_t AirShape::Get_left(uint32_t *number)
 uint32_t AirShape::Get_top(uint32_t *number)
 {
     String cmd;
-    cmd = "ShapeGet(\"";
+    cmd = "ShapeGet(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -128,11 +128,11 @@ uint32_t AirShape::Get_top(uint32_t *number)
 uint32_t AirShape::Get_width(uint32_t *number)
 {
     String cmd;
-    cmd = "ShapeGet(\"";
+    cmd = "ShapeGet(";
     cmd += getObjName();
-    cmd += "\",\"Width\",\"";
+    cmd += ",Width,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -140,11 +140,11 @@ uint32_t AirShape::Get_width(uint32_t *number)
 uint32_t AirShape::Get_height(uint32_t *number)
 {
     String cmd;
-    cmd = "ShapeGet(\"";
+    cmd = "ShapeGet(";
     cmd += getObjName();
-    cmd += "\",\"Height\",\"";
+    cmd += ",Height,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -152,11 +152,11 @@ uint32_t AirShape::Get_height(uint32_t *number)
 uint32_t AirShape::Get_Active(uint32_t *number)
 {
     String cmd;
-    cmd = "ShapeGet(\"";
+    cmd = "ShapeGet(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }

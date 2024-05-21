@@ -24,11 +24,11 @@ AirPicture::AirPicture( const char *name)
 uint32_t AirPicture::Get_visible(uint32_t *number)
 {
     String cmd;
-    cmd = "ImageGet(\"";
+    cmd = "ImG(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -36,11 +36,11 @@ uint32_t AirPicture::Get_visible(uint32_t *number)
 uint32_t AirPicture::Get_left(uint32_t *number)
 {
     String cmd;
-    cmd = "ImageGet(\"";
+    cmd = "ImG(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -48,11 +48,11 @@ uint32_t AirPicture::Get_left(uint32_t *number)
 uint32_t AirPicture::Get_top(uint32_t *number)
 {
     String cmd;
-    cmd = "ImageGet(\"";
+    cmd = "ImG(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -60,11 +60,11 @@ uint32_t AirPicture::Get_top(uint32_t *number)
 uint32_t AirPicture::Get_width(uint32_t *number)
 {
     String cmd;
-    cmd = "ImageGet(\"";
+    cmd = "ImG(";
     cmd += getObjName();
-    cmd += "\",\"Width\",\"";
+    cmd += ",Width,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -72,11 +72,11 @@ uint32_t AirPicture::Get_width(uint32_t *number)
 uint32_t AirPicture::Get_height(uint32_t *number)
 {
     String cmd;
-    cmd = "ImageGet(\"";
+    cmd = "ImG(";
     cmd += getObjName();
-    cmd += "\",\"Height\",\"";
+    cmd += ",Height,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -89,11 +89,11 @@ uint32_t AirPicture::Set_Image_File(String imgName)
     String cmd;
     
     //utoa(number, buf, 10);
-    cmd = "ImageSet(\"";
+    cmd = "ImS(";
     cmd += getObjName();
-    cmd += "\",\"Image_File\",\"";
+    cmd += ",Image_File,";
     cmd += imgName;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -104,11 +104,11 @@ uint32_t AirPicture::Set_active(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ImageSet(\"";
+    cmd = "ImS(";
     cmd += getObjName();
-    cmd += "\",\"Active\",\"";
+    cmd += ",Active,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -119,11 +119,11 @@ uint32_t AirPicture::Set_visible(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ImageSet(\"";
+    cmd = "ImS(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -134,11 +134,11 @@ uint32_t AirPicture::Set_left(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ImageSet(\"";
+    cmd = "ImS(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -149,11 +149,11 @@ uint32_t AirPicture::Set_top(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ImageSet(\"";
+    cmd = "ImS(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -164,11 +164,11 @@ uint32_t AirPicture::Set_width(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ImageSet(\"";
+    cmd = "ImS(";
     cmd += getObjName();
-    cmd += "\",\"Width\",\"";
+    cmd += ",Width,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -179,11 +179,11 @@ uint32_t AirPicture::Set_height(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "ImageSet(\"";
+    cmd = "ImS(";
     cmd += getObjName();
-    cmd += "\",\"Height\",\"";
+    cmd += ",Height,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }

@@ -27,13 +27,13 @@ bool AirRtc::dateSet(int day,int month,int year)
 
 
     String cmd;
-    cmd = "dateSet(\"";
+    cmd = "dateSet(";
     cmd += sDay;
-    cmd += "\",\"";
+    cmd += ",";
     cmd += sMonth;
-    cmd += "\",\"";
+    cmd += ",";
     cmd += sYear;    
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -49,11 +49,11 @@ bool AirRtc::timeSet(int hour,int min)
 
 
     String cmd;
-    cmd = "timeSet(\"";
+    cmd = "timeSet(";
     cmd += sHour;
-    cmd += "\",\"";
+    cmd += ",";
     cmd += sMin;  
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }

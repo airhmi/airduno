@@ -26,11 +26,11 @@ bool AirGauge::Set_visible(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "GaugeSet(\"";
+    cmd = "GgS(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -41,11 +41,11 @@ bool AirGauge::Set_left(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "GaugeSet(\"";
+    cmd = "GgS(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -56,11 +56,11 @@ bool AirGauge::Set_top(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "GaugeSet(\"";
+    cmd = "GgS(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -71,11 +71,11 @@ bool AirGauge::Set_radius(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "GaugeSet(\"";
+    cmd = "GgS(";
     cmd += getObjName();
-    cmd += "\",\"Radius\",\"";
+    cmd += ",Radius,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -86,11 +86,11 @@ bool AirGauge::Set_color(uint32_t number)
     String cmd;
     
     sprintf(buf,"%lu",number);
-    cmd = "GaugeSet(\"";
+    cmd = "GgS(";
     cmd += getObjName();
-    cmd += "\",\"Color\",\"";
+    cmd += ",Color,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -102,11 +102,11 @@ bool AirGauge::Set_value(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "GaugeSet(\"";
+    cmd = "GgS(";
     cmd += getObjName();
-    cmd += "\",\"Value\",\"";
+    cmd += ",Value,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -114,11 +114,11 @@ bool AirGauge::Set_value(uint32_t number)
  bool AirGauge::Get_visible(uint32_t *number)
 {
     String cmd;
-    cmd = "GaugeGet(\"";
+    cmd = "GgG(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -126,11 +126,11 @@ bool AirGauge::Set_value(uint32_t number)
 bool AirGauge::Get_left(uint32_t *number)
 {
     String cmd;
-    cmd = "GaugeGet(\"";
+    cmd = "GgG(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -138,11 +138,11 @@ bool AirGauge::Get_left(uint32_t *number)
 bool AirGauge::Get_top(uint32_t *number)
 {
     String cmd;
-    cmd = "GaugeGet(\"";
+    cmd = "GgG(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -150,11 +150,11 @@ bool AirGauge::Get_top(uint32_t *number)
 bool AirGauge::Get_radius(uint32_t *number)
 {
     String cmd;
-    cmd = "GaugeGet(\"";
+    cmd = "GgG(";
     cmd += getObjName();
-    cmd += "\",\"Radius\",\"";
+    cmd += ",Radius,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -162,11 +162,11 @@ bool AirGauge::Get_radius(uint32_t *number)
 bool AirGauge::Get_color(uint32_t *number)
 {
     String cmd;
-    cmd = "GaugeGet(\"";
+    cmd = "GgG(";
     cmd += getObjName();
-    cmd += "\",\"Color\",\"";
+    cmd += ",Color,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -175,11 +175,11 @@ bool AirGauge::Get_color(uint32_t *number)
 bool AirGauge::Get_value(uint32_t *number)
 {
     String cmd;
-    cmd = "GaugeGet(\"";
+    cmd = "GgG(";
     cmd += getObjName();
-    cmd += "\",\"Value\",\"";
+    cmd += ",Value,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }

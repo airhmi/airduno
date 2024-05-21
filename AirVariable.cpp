@@ -27,11 +27,11 @@ bool AirVariable::VarSeti(uint32_t value)
     String cmd;
     
     sprintf(buf,"%lu",value);
-    cmd = "VarSet(\"";
+    cmd = "VarSet(";
     cmd += getObjName();
-    cmd += "\",\"";
+    cmd += ",";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -44,11 +44,11 @@ bool AirVariable::VarSetf(double value)
     String cmd;
     
     sprintf(buf,"%.04f",value);
-    cmd = "VarSet(\"";
+    cmd = "VarSet(";
     cmd += getObjName();
-    cmd += "\",\"";
+    cmd += ",";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
 
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
@@ -58,11 +58,11 @@ bool AirVariable::VarSet(String value)
 {
     String cmd;
     
-    cmd = "VarSet(\"";
+    cmd = "VarSet(";
     cmd += getObjName();
-    cmd += "\",\"";
+    cmd += ",";
     cmd += value;
-    cmd +="\");";
+    cmd +=");";
 
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
@@ -75,11 +75,11 @@ uint32_t AirVariable::VarGeti(void)
     String cmd;
     uint32_t len = 20;
 
-    cmd = "VarGet(\"";
+    cmd = "VarGet(";
     cmd += getObjName();
-    cmd += "\",\"";
+    cmd += ",";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
 
     sendCommand(cmd.c_str());
     recvRetString(buffer,len);
@@ -96,11 +96,11 @@ double AirVariable::VarGetf(void)
     double floatValue=0; 
 
     String cmd;
-    cmd = "VarGet(\"";
+    cmd = "VarGet(";
     cmd += getObjName();
-    cmd += "\",\"";
+    cmd += ",";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
 
     sendCommand(cmd.c_str());
     recvRetString(buffer,len);
@@ -114,11 +114,11 @@ uint16_t AirVariable::VarGet(char *buffer, uint16_t len)
     uint32_t value = 0;
 
     String cmd;
-    cmd = "VarGet(\"";
+    cmd = "VarGet(";
     cmd += getObjName();
-    cmd += "\",\"";
+    cmd += ",";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
 
     sendCommand(cmd.c_str());
     return recvRetString(buffer,len);

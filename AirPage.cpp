@@ -23,9 +23,9 @@ AirPage::AirPage()
 bool AirPage::ChangeScreen(const char *buffer)
 {
     String cmd;
-    cmd = "ChangeScreenSet(\"";
+    cmd = "CsS(";
     cmd += buffer;
-    cmd +="\");";
+    cmd +=");";
 	sendCommand(cmd.c_str());
     return recvRetCommandFinished();    
 }

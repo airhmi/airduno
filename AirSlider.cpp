@@ -25,11 +25,11 @@ uint32_t AirSlider::Set_Value(uint32_t value)
     String cmd;
     
     utoa(value, buf, 10);
-    cmd = "SliderSet(\"";
+    cmd = "SlS(";
     cmd += getObjName();
-    cmd += "\",\"Value\",\"";
+    cmd += ",Value,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -40,11 +40,11 @@ uint32_t AirSlider::Set_Color(uint32_t value)
     String cmd;
     
     sprintf(buf,"%lu",value);
-    cmd = "SliderSet(\"";
+    cmd = "SlS(";
     cmd += getObjName();
-    cmd += "\",\"Color\",\"";
+    cmd += ",Color,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -53,11 +53,11 @@ uint32_t AirSlider::Set_Color(uint32_t value)
 uint32_t AirSlider::Get_Value(uint32_t *value)
 {
     String cmd;
-    cmd = "SliderGet(\"";
+    cmd = "SlGet(";
     cmd += getObjName();
-    cmd += "\",\"Value\",\"";
+    cmd += ",Value,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(value);
 }
@@ -66,11 +66,11 @@ uint32_t AirSlider::Get_Value(uint32_t *value)
 uint32_t AirSlider::Get_Color(uint32_t *value)
 {
     String cmd;
-    cmd = "SliderGet(\"";
+    cmd = "SlGet(";
     cmd += getObjName();
-    cmd += "\",\"Color\",\"";
+    cmd += ",Color,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(value);
 }

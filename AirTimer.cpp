@@ -23,11 +23,11 @@ AirTimer::AirTimer( const char *name)
 bool AirTimer::getInterval(uint32_t *value)
 {
     String cmd;
-    cmd = "TimerGet(\"";
+    cmd = "TimerGet(";
     cmd += getObjName();
-    cmd += "\",\"Interval\",\"";
+    cmd += ",Interval,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(value);
 }
@@ -38,11 +38,11 @@ bool AirTimer::setInterval(uint32_t value)
     String cmd;
     
     utoa(value, buf, 10);
-    cmd = "TimerSet(\"";
+    cmd = "TmrS(";
     cmd += getObjName();
-    cmd += "\",\"Interval\",\"";
+    cmd += ",Interval,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -52,10 +52,10 @@ bool AirTimer::enable(void)
 {
     String cmd;
     
-    cmd = "TimerSet(\"";
+    cmd = "TmrS(";
     cmd += getObjName();
-    cmd += "\",\"1\"";
-    cmd +="\");";
+    cmd += ",1";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -64,10 +64,10 @@ bool AirTimer::disable(void)
 {
     String cmd;
     
-    cmd = "TimerSet(\"";
+    cmd = "TmrS(";
     cmd += getObjName();
-    cmd += "\",\"0\"";
-    cmd +="\");";
+    cmd += ",0";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }

@@ -22,11 +22,11 @@ AirLabel::AirLabel( const char *name)
 uint32_t AirLabel::Get_visible(uint32_t *number)
 {
     String cmd;
-    cmd = "LabelGet(\"";
+    cmd = "LGet(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -34,11 +34,11 @@ uint32_t AirLabel::Get_visible(uint32_t *number)
 uint32_t AirLabel::Get_left(uint32_t *number)
 {
     String cmd;
-    cmd = "LabelGet(\"";
+    cmd = "LGet(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -46,11 +46,11 @@ uint32_t AirLabel::Get_left(uint32_t *number)
 uint32_t AirLabel::Get_top(uint32_t *number)
 {
     String cmd;
-    cmd = "LabelGet(\"";
+    cmd = "LGet(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -58,11 +58,11 @@ uint32_t AirLabel::Get_top(uint32_t *number)
 uint32_t AirLabel::Get_width(uint32_t *number)
 {
     String cmd;
-    cmd = "LabelGet(\"";
+    cmd = "LGet(";
     cmd += getObjName();
-    cmd += "\",\"Width\",\"";
+    cmd += ",Width,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -70,11 +70,11 @@ uint32_t AirLabel::Get_width(uint32_t *number)
 uint32_t AirLabel::Get_height(uint32_t *number)
 {
     String cmd;
-    cmd = "LabelGet(\"";
+    cmd = "LGet(";
     cmd += getObjName();
-    cmd += "\",\"Height\",\"";
+    cmd += ",Height,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -82,11 +82,11 @@ uint32_t AirLabel::Get_height(uint32_t *number)
 uint32_t AirLabel::Get_fontSize(uint32_t *number)
 {
     String cmd;
-    cmd = "LabelGet(\"";
+    cmd = "LGet(";
     cmd += getObjName();
-    cmd += "\",\"FontSize\",\"";
+    cmd += ",FontSize,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -94,11 +94,11 @@ uint32_t AirLabel::Get_fontSize(uint32_t *number)
 uint32_t AirLabel::Get_fontColor(uint32_t *number)
 {
     String cmd;
-    cmd = "LabelGet(\"";
+    cmd = "LGet(";
     cmd += getObjName();
-    cmd += "\",\"Font_Color\",\"";
+    cmd += ",Font_Color,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }
@@ -106,11 +106,11 @@ uint32_t AirLabel::Get_fontColor(uint32_t *number)
 uint16_t AirLabel::getText(char *buffer, uint16_t len)
 {
     String cmd;
-    cmd = "LabelGet(\"";
+    cmd = "LGet(";
     cmd += getObjName();
-    cmd += "\",\"Text\",\"";
+    cmd += ",Text,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetString(buffer,len);
 }
@@ -119,11 +119,11 @@ uint16_t AirLabel::getText(char *buffer, uint16_t len)
 bool AirLabel::setText(const char *buffer)
 {
     String cmd;
-    cmd = "LabelSet(\"";
+    cmd = "LblS(";
     cmd += getObjName();
-    cmd += "\",\"Text\",\"";
+    cmd += ",Text,";
     cmd += buffer;
-    cmd +="\");";
+    cmd +=");";
 	sendCommand(cmd.c_str());
     return recvRetCommandFinished();    
 }
@@ -135,11 +135,11 @@ uint32_t AirLabel::Set_visible(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "LabelSet(\"";
+    cmd = "LblS(";
     cmd += getObjName();
-    cmd += "\",\"Visible\",\"";
+    cmd += ",Vis,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -150,11 +150,11 @@ uint32_t AirLabel::Set_left(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "LabelSet(\"";
+    cmd = "LblS(";
     cmd += getObjName();
-    cmd += "\",\"Left\",\"";
+    cmd += ",Left,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -165,11 +165,11 @@ uint32_t AirLabel::Set_top(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "LabelSet(\"";
+    cmd = "LblS(";
     cmd += getObjName();
-    cmd += "\",\"Top\",\"";
+    cmd += ",Top,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -180,11 +180,11 @@ uint32_t AirLabel::Set_width(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "LabelSet(\"";
+    cmd = "LblS(";
     cmd += getObjName();
-    cmd += "\",\"Width\",\"";
+    cmd += ",Width,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -195,11 +195,11 @@ uint32_t AirLabel::Set_height(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "LabelSet(\"";
+    cmd = "LblS(";
     cmd += getObjName();
-    cmd += "\",\"Height\",\"";
+    cmd += ",Height,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -210,11 +210,11 @@ uint32_t AirLabel::Set_fontSize(uint32_t number)
     String cmd;
     
     utoa(number, buf, 10);
-    cmd = "LabelSet(\"";
+    cmd = "LblS(";
     cmd += getObjName();
-    cmd += "\",\"FontSize\",\"";
+    cmd += ",FontSize,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -225,11 +225,11 @@ uint32_t AirLabel::Set_fontColor(uint32_t number)
     String cmd;
     
     sprintf(buf,"%lu",number);
-    cmd = "LabelSet(\"";
+    cmd = "LblS(";
     cmd += getObjName();
-    cmd += "\",\"Font_Color\",\"";
+    cmd += ",Font_Color,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }

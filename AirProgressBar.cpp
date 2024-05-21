@@ -27,11 +27,11 @@ uint32_t AirProgressBar::Set_Value(uint32_t value)
     String cmd;
     
     utoa(value, buf, 10);
-    cmd = "ProgressBarSet(\"";
+    cmd = "PbS(";
     cmd += getObjName();
-    cmd += "\",\"Value\",\"";
+    cmd += ",Value,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -42,11 +42,11 @@ uint32_t AirProgressBar::Set_Color(uint32_t value)
     String cmd;
     
     sprintf(buf,"%lu",value);
-    cmd = "ProgressBarSet(\"";
+    cmd = "PbS(";
     cmd += getObjName();
-    cmd += "\",\"Color\",\"";
+    cmd += ",Color,";
     cmd += buf;
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
@@ -55,11 +55,11 @@ uint32_t AirProgressBar::Set_Color(uint32_t value)
 uint32_t AirProgressBar::Get_Value(uint32_t *value)
 {
     String cmd;
-    cmd = "ProgressBarGet(\"";
+    cmd = "ProgressBarGet(";
     cmd += getObjName();
-    cmd += "\",\"Value\",\"";
+    cmd += ",Value,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(value);
 }
@@ -68,11 +68,11 @@ uint32_t AirProgressBar::Get_Value(uint32_t *value)
 uint32_t AirProgressBar::Get_Color(uint32_t *value)
 {
     String cmd;
-    cmd = "ProgressBarGet(\"";
+    cmd = "ProgressBarGet(";
     cmd += getObjName();
-    cmd += "\",\"Color\",\"";
+    cmd += ",Color,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetNumber(value);
 }

@@ -75,9 +75,9 @@ double AirGpio::analog_read(uint32_t port)
     String cmd;
     cmd = "ADC_Read(";
     cmd += buf;
-    cmd += ",\"Text\",\"";
+    cmd += ",Text,";
     cmd += "NULL";
-    cmd +="\");";
+    cmd +=");";
     sendCommand(cmd.c_str());
     recvRetString(buffer,len); 
 
