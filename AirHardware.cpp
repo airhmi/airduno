@@ -169,8 +169,11 @@ uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
     }
 
     ret = temp.length();
-    ret = ret > len ? len : ret;
-    strncpy(buffer, temp.c_str(), ret);
+    if( ret > 0  )
+    {
+        ret = ret > len ? len : ret;
+        strncpy(buffer, temp.c_str(), ret);
+    }
     
 __return:
 

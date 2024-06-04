@@ -27,7 +27,7 @@ bool AirVariable::VarSeti(uint32_t value)
     String cmd;
     
     sprintf(buf,"%lu",value);
-    cmd = "VarSet(";
+    cmd = "VarSeti(";
     cmd += getObjName();
     cmd += ",";
     cmd += buf;
