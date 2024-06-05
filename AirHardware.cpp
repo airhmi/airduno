@@ -108,7 +108,7 @@ __return:
  * @return the length of string buffer.
  *
  */
-uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
+uint16_t recvRetString_(char *buffer, uint16_t len, uint32_t timeout)
 {
     uint16_t ret = 0;
     bool str_start_flag = false;
@@ -185,6 +185,95 @@ __return:
 
     return ret;
 }
+
+
+/*
+ * Receive string data. 
+ * 
+ * @param buffer - save string data. 
+ * @param len - string buffer length. 
+ * @param timeout - set timeout time. 
+ *
+ * @return the length of string buffer.
+ *
+ */
+uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
+{
+    uint16_t ret = 0;
+    bool str_start_flag = false;
+    uint8_t cnt_0xff = 0;
+    String temp = String("");
+    uint8_t c = 0;
+    long start;
+    int state = 0;
+
+    if (!buffer || len == 0)
+    {
+        goto __return;
+    }
+    
+    
+    start = millis();
+    while (millis() - start <= timeout)
+    {
+
+        while (airSerial.available())
+        {
+            c = airSerial.read();
+
+            if(state == 0 )
+            {
+                if (0x01 == c)
+                    state++;  
+            }
+            else if(state == 1 )
+            {
+                if (0x7E == c)
+                    state++;  
+                else
+                    temp += (char)c;  
+            }
+            else if(state == 2 )
+            { 
+                if (0x6F == c)
+                {
+                    state++;    
+                    break;
+                }
+            }
+
+            
+
+        }
+    }
+    
+
+
+    if( state == 3 )
+    {
+        ret = temp.length();
+        if( ret > 0  )
+        {
+            ret = ret > len ? len : ret;
+            strncpy(buffer, temp.c_str(), ret);
+        }
+    }
+    else
+    {
+        ret = 0xFE;
+    }
+    
+__return:
+
+    dbSerialPrint("recvRetString[");
+    dbSerialPrint(temp.length());
+    dbSerialPrint(",");
+    dbSerialPrint(temp);
+    dbSerialPrintln("]");
+
+    return ret;
+}
+
 
 /*
  * Send command to AirHMI.

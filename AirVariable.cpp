@@ -68,12 +68,31 @@ bool AirVariable::VarSet(String value)
     return recvRetCommandFinished();
 }
 
+
+bool isValidNumber(const char *str) {
+    // Eğer boş dize ise geçersiz kabul et
+    if (*str == '\0') {
+        return false;
+    }
+
+    // Her karakteri kontrol et
+    while (*str) {
+        if (!isdigit(*str)) {
+            return false;
+        }
+        str++;
+    }
+    return true;
+}
+
 uint32_t AirVariable::VarGeti(void)
 {
-    char buffer[10] = {0};
+    char buffer[100] = {0};
     uint32_t value = 0;
     String cmd;
     uint32_t len = 20;
+    uint16_t ret = 0;
+    uint32_t start;
 
     cmd = "VarGet(";
     cmd += getObjName();
@@ -81,9 +100,20 @@ uint32_t AirVariable::VarGeti(void)
     cmd += "NULL";
     cmd +=");";
 
-    sendCommand(cmd.c_str());
-    recvRetString(buffer,len);
-    value = atoi(buffer);
+    start = millis();
+    while (millis() - start <= 1000)
+    {
+        sendCommand(cmd.c_str());
+        ret = recvRetString(buffer,len);
+        if( ret != 0xFE &&  isValidNumber(buffer) )
+        {
+            
+            break;
+        }
+    }
+
+    if( isValidNumber(buffer) )
+        value = atoi(buffer);
 
     return value;
 }
@@ -91,6 +121,8 @@ uint32_t AirVariable::VarGeti(void)
 
 double AirVariable::VarGetf(void)
 {
+    uint16_t ret = 0;
+    uint32_t start;     
     char buffer[10] = {0};
     uint32_t len = 20;
     double floatValue=0; 
@@ -102,15 +134,28 @@ double AirVariable::VarGetf(void)
     cmd += "NULL";
     cmd +=");";
 
-    sendCommand(cmd.c_str());
-    recvRetString(buffer,len);
-    floatValue =atof(buffer);
+    start = millis();
+    while (millis() - start <= 1000)
+    {
+        sendCommand(cmd.c_str());
+        ret = recvRetString(buffer,len);
+        if( ret != 0xFE &&  isValidNumber(buffer) )
+        {
+            
+            break;
+        }
+    }
+
+    if( isValidNumber(buffer) )
+        floatValue =atof(buffer);
 
     return floatValue;
 }
 
 uint16_t AirVariable::VarGet(char *buffer, uint16_t len)
 {
+    uint16_t ret = 0;
+    uint32_t start;     
     uint32_t value = 0;
 
     String cmd;
@@ -120,8 +165,19 @@ uint16_t AirVariable::VarGet(char *buffer, uint16_t len)
     cmd += "NULL";
     cmd +=");";
 
-    sendCommand(cmd.c_str());
-    return recvRetString(buffer,len);
+   start = millis();
+    while (millis() - start <= 1000)
+    {
+        sendCommand(cmd.c_str());
+        ret = recvRetString(buffer,len);
+        if( ret != 0xFE )
+        {
+            
+            break;
+        }
+    }
+
+    return ret;    
 }
 
 

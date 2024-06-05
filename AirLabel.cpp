@@ -105,14 +105,28 @@ uint32_t AirLabel::Get_fontColor(uint32_t *number)
 
 uint16_t AirLabel::getText(char *buffer, uint16_t len)
 {
+    uint16_t ret = 0;
+    uint32_t start;     
     String cmd;
     cmd = "LGet(";
     cmd += getObjName();
     cmd += ",Text,";
     cmd += "NULL";
     cmd +=");";
-    sendCommand(cmd.c_str());
-    return recvRetString(buffer,len);
+
+   start = millis();
+    while (millis() - start <= 1000)
+    {
+        sendCommand(cmd.c_str());
+        ret = recvRetString(buffer,len);
+        if( ret != 0xFE )
+        {
+            
+            break;
+        }
+    }
+
+    return ret;
 }
 
 

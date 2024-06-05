@@ -294,25 +294,56 @@ bool AirButton::Set_height(uint32_t number)
 
 uint16_t AirButton::getText(char *buffer, uint16_t len)
 {
+    uint32_t start; 
     String cmd;
+    uint16_t ret = 0;
+    
     cmd = "BtnG(";
     cmd += getObjName();
     cmd += ",Text,";
     cmd += "NULL";
     cmd +=");";
-    sendCommand(cmd.c_str());
-    return recvRetString(buffer,len);
+
+    start = millis();
+    while (millis() - start <= 1000)
+    {
+        sendCommand(cmd.c_str());
+        ret = recvRetString(buffer,len);
+        if( ret != 0xFE )
+        {
+            
+            break;
+        }
+    }
+
+    return ret;    
 }
 
 uint32_t AirButton::getFont(char *buffer , int len)
 {
+    uint16_t ret = 0;
+    uint32_t start;   
     String cmd;
-    cmd += "get ";
+
+    cmd = "BtnG(";
     cmd += getObjName();
-    cmd += ".font";
-    sendCommand(cmd.c_str());
-    
-    return recvRetString(buffer,len);
+    cmd += ",FontName,";
+    cmd += "NULL";
+    cmd +=");";
+
+    start = millis();
+    while (millis() - start <= 1000)
+    {
+        sendCommand(cmd.c_str());
+        ret = recvRetString(buffer,len);
+        if( ret != 0xFE )
+        {
+            
+            break;
+        }
+    }
+
+    return ret; 
 }
 
 uint32_t AirButton::Get_background_color(uint32_t *number)

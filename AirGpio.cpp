@@ -66,6 +66,8 @@ uint32_t AirGpio::digital_read(uint32_t port)
 
 double AirGpio::analog_read(uint32_t port)
 {
+    uint16_t ret = 0;
+    uint32_t start;     
     char buf[10] = {0};
     char buffer[100];
     int len = 0;
@@ -78,8 +80,18 @@ double AirGpio::analog_read(uint32_t port)
     cmd += ",Text,";
     cmd += "NULL";
     cmd +=");";
-    sendCommand(cmd.c_str());
-    recvRetString(buffer,len); 
+
+   start = millis();
+    while (millis() - start <= 1000)
+    {
+        sendCommand(cmd.c_str());
+        ret = recvRetString(buffer,len);
+        if( ret != 0xFE )
+        {
+            
+            break;
+        }
+    }
 
     return atof(buffer);
 }
