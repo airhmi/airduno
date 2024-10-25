@@ -33,6 +33,7 @@
 #include "AirLabel.h"
 #include "AirWaveform.h"
 #include "AirTimer.h"
+#include "AirGraph.h"
 //#include "AirNumber.h"
 //#include "AirDualStateButton.h"
 #include "AirVariable.h"

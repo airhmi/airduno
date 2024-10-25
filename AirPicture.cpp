@@ -15,7 +15,7 @@
 
 #include "AirPicture.h"
 
-AirPicture::AirPicture( const char *name)
+AirPicture::AirPicture(const char *name)
     :AirTouch(0, 0, name)
 {
 }

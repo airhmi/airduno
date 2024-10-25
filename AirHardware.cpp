@@ -365,7 +365,7 @@ bool airInit(void)
     
     //dbSerialBegin(115200);
     airSerial.begin(115200);
-
+    //airSerial.begin(115200, SERIAL_8N1, 32, 33); // Software Serial için bu kod açılır pin numaraları tanımlanır.AirConfig'den Serial2 yapılır.
 	//airSerial.print("INIT start;");
 	
     while(ret == false)

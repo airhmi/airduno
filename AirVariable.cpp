@@ -75,13 +75,24 @@ bool isValidNumber(const char *str) {
         return false;
     }
 
+    bool dotSeen = false;  // Ondalık noktasının daha önce görülüp görülmediğini takip eder
+
     // Her karakteri kontrol et
     while (*str) {
-        if (!isdigit(*str)) {
+        if (*str == '.') {
+            // Eğer daha önce nokta görülmüşse ikinci bir nokta geçersizdir
+            if (dotSeen) {
+                return false;
+            }
+            dotSeen = true;  // İlk defa nokta görülürse işaretlenir
+        } 
+        else if (!isdigit(*str)) {
+            // Sayı değilse ve nokta değilse geçersizdir
             return false;
         }
         str++;
     }
+
     return true;
 }
 
@@ -123,9 +134,9 @@ double AirVariable::VarGetf(void)
 {
     uint16_t ret = 0;
     uint32_t start;     
-    char buffer[10] = {0};
+    char buffer[20] = {0}; // Buffer'ı biraz genişlettik
     uint32_t len = 20;
-    double floatValue=0; 
+    double floatValue = 0; 
 
     String cmd;
     cmd = "VarGet(";
@@ -138,16 +149,21 @@ double AirVariable::VarGetf(void)
     while (millis() - start <= 1000)
     {
         sendCommand(cmd.c_str());
-        ret = recvRetString(buffer,len);
-        if( ret != 0xFE &&  isValidNumber(buffer) )
+        ret = recvRetString(buffer, len);
+        if (ret != 0xFE && isValidNumber(buffer))
         {
-            
+            //Serial.println(buffer); // Buffer içeriğini yazdır
             break;
         }
     }
 
-    if( isValidNumber(buffer) )
-        floatValue =atof(buffer);
+    if (isValidNumber(buffer))
+    {
+        // Ekstra karakterlerden kurtulmak için string'i temizleyin
+        String bufferStr(buffer);
+        bufferStr.trim();  // Başındaki ve sonundaki boşlukları kaldır
+        floatValue = atof(bufferStr.c_str()); // Double'a çevir
+    }
 
     return floatValue;
 }

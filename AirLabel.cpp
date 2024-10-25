@@ -135,9 +135,9 @@ bool AirLabel::setText(const char *buffer)
     String cmd;
     cmd = "LblS(";
     cmd += getObjName();
-    cmd += ",Text,";
+    cmd += ",Text,\"";
     cmd += buffer;
-    cmd +=");";
+    cmd +="\");";
 	sendCommand(cmd.c_str());
     return recvRetCommandFinished();    
 }
