@@ -34,8 +34,23 @@
 	/**
 	 * Define airSerial for communicate with AirHMI touch panel.
 	 */
-#define airSerial Serial
-
+	#define airSerial Serial
+	#define HW_SERIAL
+	/**
+	 * Define airSerial for Software Serial.
+	 */
+	// #include <SoftwareSerial.h>
+	// extern SoftwareSerial airSerial;
+	// #define AIRHMI_ARDUINO_SOFTWARE_SERIAL
+	// #define RX_PIN 10
+	// #define TX_PIN 11	 
+	/**
+	 * Define airSerial for communicate with ESP32 Pin 12 13.
+	 */
+	//#define airSerial Serial2
+	//#define AIRHMI_ESP32_SOFTWARE_SERIAL
+	//#define RX_PIN 12
+	//#define TX_PIN 13
 
 #ifdef DEBUG_SERIAL_ENABLE
 #define dbSerialPrint(a)    dbSerial.print(a)

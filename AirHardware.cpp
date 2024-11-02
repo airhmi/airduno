@@ -13,6 +13,7 @@
  * the License, or (at your option) any later version.
  */
 #include "AirHardware.h"
+#include <SoftwareSerial.h>
 
 #define AIR_RET_CMD_FINISHED            (0x01)
 #define AIR_RET_EVENT_LAUNCHED          (0x88)
@@ -32,6 +33,12 @@
 #define AIR_RET_INVALID_VARIABLE        (0x1A)
 #define AIR_RET_INVALID_OPERATION       (0x1B)
 #define AIR_CONNECT                     (0x1C)
+
+
+#ifdef AIRHMI_ARDUINO_SOFTWARE_SERIAL	 
+	SoftwareSerial airSerial(RX_PIN, TX_PIN);//arduino için software tanımlamada bu kod açılır
+#endif
+//SoftwareSerial airSerial(12, 13);//arduino için software tanımlamada bu kod açılır
 /*
  * Receive uint32_t data. 
  * 
@@ -364,8 +371,18 @@ bool airInit(void)
     uint8_t c;  
     
     //dbSerialBegin(115200);
-    airSerial.begin(115200);
-    //airSerial.begin(115200, SERIAL_8N1, 32, 33); // Software Serial için bu kod açılır pin numaraları tanımlanır.AirConfig'den Serial2 yapılır.
+    //airSerial.begin(115200);	
+#ifdef HW_SERIAL	
+	airSerial.begin(115200);//arduino için software tanımlamada bu kod açılır
+#endif
+
+#ifdef AIRHMI_ARDUINO_SOFTWARE_SERIAL	
+	airSerial.begin(115200);//arduino için software tanımlamada bu kod açılır
+#endif
+	
+#ifdef AIRHMI_ESP32_SOFTWARE_SERIAL	
+	airSerial.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN); // Software Serial için bu kod açılır pin numaraları tanımlanır.AirConfig'den Serial2 yapılır.
+#endif	
 	//airSerial.print("INIT start;");
 	
     while(ret == false)
