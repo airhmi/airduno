@@ -30,7 +30,7 @@ bool AirGraph::addValue(uint32_t value, uint32_t value2)
     sprintf(buf,"%lu",value);
 	sprintf(buf2,"%lu",value2);
     
-    cmd = "GRAPH_AddValue(";
+    cmd = "GAddValue(";
     cmd += getObjName();
     cmd += ",";
     cmd += buf;

@@ -389,7 +389,7 @@ bool airInit(void)
     {
         if( ( airDunoConnect == 0 )  && ( millis() - airDunoSendTimeout ) > 5000 )
         {
-            airSerial.print("ArduinoReq();");
+            airSerial.print("ArduinoReq();\n");
             airDunoSendTimeout = millis();
         }
 
