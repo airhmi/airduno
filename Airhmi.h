@@ -43,5 +43,6 @@
 #include "AirGpio.h"
 #include "AirRtc.h"
 #include "AirShape.h"
+#include "AirBuzzer.h"
 
 #endif /* #ifndef __AirHMI_H__ */
