@@ -50,6 +50,6 @@ void airLoop(AirTouch *air_listen_list[]);
 bool recvRetNumber(uint32_t *number, uint32_t timeout = 100);
 uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout = 100);
 void sendCommand(const char* cmd);
-bool recvRetCommandFinished(uint32_t timeout = 3000);
+bool recvRetCommandFinished(uint32_t timeout = 1000);
 
 #endif /* #ifndef __AIRHARDWARE_H__ */

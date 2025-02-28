@@ -9,7 +9,7 @@ void b0PopCallback(void *ptr)
 
   // Mevcut buton değerini al
   b0.getText(buffer, sizeof(buffer));
-  currentValue = atoi(buffer); // String'i integer'a çevir
+  currentValue = atoi(buffer); // String'i acinteger'a çevir
   
   // Değeri bir arttır
   currentValue++;
