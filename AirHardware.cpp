@@ -317,43 +317,42 @@ bool recvRetCommandFinished(uint32_t timeout)
     uint8_t c = 0;
     long start;
     int state = 0;
+    bool loop = true;
 
-    return true;
-    
-    /*
-    
     start = millis();
-    while (millis() - start <= timeout)
+    while (millis() - start <= timeout && loop)
     {
 
         while (airSerial.available())
         {
+            c = airSerial.read();
             if(state == 0 )
-            {
-                c = airSerial.read();
+            {                
                 if ('O' == c)
                     state++;    
             }
             else if(state == 1 )
             {
-                c = airSerial.read();
                 if ('K' == c)
                     state++;    
             }
             else if(state == 2 )
             {
-                c = airSerial.read();
-                if ('\n' == c)
+                if (0x0a == c)
+                    state++;    
+            }            
+            else if(state == 3 )
+            {
+                if (0x0d == c)
                 {
                     ret = true;
+                    loop = false;
                     break;
                 }   
             }
 
         }
     }
-
-    */
 
     return ret;
 }
@@ -410,7 +409,7 @@ bool airInit(void)
                         if( event == AIR_CONNECT )
                         {
                             airDunoConnect = 1;
-                            airSerial.print("FunctionsResponseSet(0);");
+                            airSerial.print("FunctionsResponseSet(1);");
                             ret = true;
                         }
                         
