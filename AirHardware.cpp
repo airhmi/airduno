@@ -213,7 +213,8 @@ uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
     uint8_t c = 0;
     long start;
     int state = 0;
-
+	bool loop = true;
+	
     if (!buffer || len == 0)
     {
         goto __return;
@@ -221,7 +222,7 @@ uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
     
     
     start = millis();
-    while (millis() - start <= timeout)
+    while (millis() - start <= timeout && loop)
     {
 
         while (airSerial.available())
@@ -244,7 +245,8 @@ uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
             { 
                 if (0x6F == c)
                 {
-                    state++;    
+                    state++; 
+					loop = false;					
                     break;
                 }
             }
