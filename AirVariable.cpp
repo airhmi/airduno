@@ -1,7 +1,7 @@
 /**
  * @file AirVariable.cpp
  *
- * The implementation of class AirText. 
+ * The implementation of class AirVariable.
  *
  * @author Omer Aygor (email:oaygor@eyzateknoloji.com)
  * @date 2023/12/14
@@ -23,9 +23,9 @@ AirVariable::AirVariable(const char *name)
 
 bool AirVariable::VarSeti(uint32_t value)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
-    
+
     sprintf(buf,"%lu",value);
     cmd = "VarSeti(";
     cmd += getObjName();
@@ -40,11 +40,12 @@ bool AirVariable::VarSeti(uint32_t value)
 
 bool AirVariable::VarSetf(double value)
 {
-    char buf[10] = {0};
+    char buf[32] = {0};
     String cmd;
-    
-    sprintf(buf,"%.04f",value);
-    cmd = "VarSet(";
+
+    // dtostrf, AVR Arduino'da çalışmayan sprintf("%f") yerine taşınabilir çözümdür.
+    dtostrf(value, 0, 4, buf);
+    cmd = "VarSetf(";
     cmd += getObjName();
     cmd += ",";
     cmd += buf;
@@ -75,7 +76,17 @@ bool isValidNumber(const char *str) {
         return false;
     }
 
-    bool dotSeen = false;  // Ondalık noktasının daha önce görülüp görülmediğini takip eder
+    // İsteğe bağlı işaret karakterini atla ('+' veya '-')
+    if (*str == '-' || *str == '+') {
+        str++;
+        // Sadece işaretten ibaretse geçersiz
+        if (*str == '\0') {
+            return false;
+        }
+    }
+
+    bool dotSeen = false;   // Ondalık noktasının daha önce görülüp görülmediğini takip eder
+    bool digitSeen = false; // En az bir rakam görüldü mü
 
     // Her karakteri kontrol et
     while (*str) {
@@ -85,23 +96,26 @@ bool isValidNumber(const char *str) {
                 return false;
             }
             dotSeen = true;  // İlk defa nokta görülürse işaretlenir
-        } 
+        }
         else if (!isdigit(*str)) {
             // Sayı değilse ve nokta değilse geçersizdir
             return false;
         }
+        else {
+            digitSeen = true;
+        }
         str++;
     }
 
-    return true;
+    return digitSeen;
 }
 
 uint32_t AirVariable::VarGeti(void)
 {
-    char buffer[100] = {0};
+    char buffer[32] = {0};
     uint32_t value = 0;
     String cmd;
-    uint32_t len = 20;
+    uint16_t len = sizeof(buffer) - 1;   // son byte daima '\0' kalsın
     uint16_t ret = 0;
     uint32_t start;
 
@@ -114,17 +128,17 @@ uint32_t AirVariable::VarGeti(void)
     start = millis();
     while (millis() - start <= 1000)
     {
+        memset(buffer, 0, sizeof(buffer));
         sendCommand(cmd.c_str());
         ret = recvRetString(buffer,len);
         if( ret != 0xFE &&  isValidNumber(buffer) )
         {
-            
             break;
         }
     }
 
     if( isValidNumber(buffer) )
-        value = atoi(buffer);
+        value = strtoul(buffer, NULL, 10);
 
     return value;
 }
@@ -133,10 +147,10 @@ uint32_t AirVariable::VarGeti(void)
 double AirVariable::VarGetf(void)
 {
     uint16_t ret = 0;
-    uint32_t start;     
-    char buffer[20] = {0}; // Buffer'ı biraz genişlettik
-    uint32_t len = 20;
-    double floatValue = 0; 
+    uint32_t start;
+    char buffer[32] = {0};
+    uint16_t len = sizeof(buffer) - 1;   // son byte daima '\0' kalsın
+    double floatValue = 0;
 
     String cmd;
     cmd = "VarGet(";
@@ -148,11 +162,11 @@ double AirVariable::VarGetf(void)
     start = millis();
     while (millis() - start <= 1000)
     {
+        memset(buffer, 0, sizeof(buffer));
         sendCommand(cmd.c_str());
         ret = recvRetString(buffer, len);
         if (ret != 0xFE && isValidNumber(buffer))
         {
-            //Serial.println(buffer); // Buffer içeriğini yazdır
             break;
         }
     }
@@ -171,8 +185,12 @@ double AirVariable::VarGetf(void)
 uint16_t AirVariable::VarGet(char *buffer, uint16_t len)
 {
     uint16_t ret = 0;
-    uint32_t start;     
-    uint32_t value = 0;
+    uint32_t start;
+
+    if (!buffer || len == 0)
+    {
+        return 0;
+    }
 
     String cmd;
     cmd = "VarGet(";
@@ -181,19 +199,19 @@ uint16_t AirVariable::VarGet(char *buffer, uint16_t len)
     cmd += "NULL";
     cmd +=");";
 
-   start = millis();
+    start = millis();
     while (millis() - start <= 1000)
     {
+        memset(buffer, 0, len);
         sendCommand(cmd.c_str());
         ret = recvRetString(buffer,len);
         if( ret != 0xFE )
         {
-            
             break;
         }
     }
 
-    return ret;    
+    return ret;
 }
 
 
