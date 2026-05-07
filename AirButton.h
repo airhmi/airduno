@@ -252,17 +252,59 @@ public: /* methods */
      * Get pco attribute of component
      *
      * @param number - buffer storing data return
-     * @return the length of the data 
-     */	 
+     * @return the length of the data
+     */
     uint32_t Get_visible(uint32_t *number);
 
     /**
      * Get pco attribute of component
      *
      * @param number - buffer storing data return
-     * @return the length of the data 
-     */	 
+     * @return the length of the data
+     */
     uint32_t getFont(char *buffer , int len);
+
+    /* ---------- Panel'in destekledigi ek ozellikler ---------- */
+
+    /**
+     * Set push-pull state of the button (toggle button visual state).
+     *
+     * @param number 1 = pressed/toggled (Press_Color shown),
+     *               0 = released/normal (Color shown).
+     *
+     * NOTE: The panel firmware previously inverted this value internally
+     * (03_button.c). This was fixed to make the API round-trip with
+     * Get_pushpull(). Older panel firmware versions may still invert.
+     */
+    bool Set_pushpull(uint32_t number);
+    uint32_t Get_pushpull(uint32_t *number);
+
+    /**
+     * Set gradient mode of the button.
+     * @param number 0 = none, non-zero = gradient enabled
+     */
+    bool Set_gradient(uint32_t number);
+    uint32_t Get_gradient(uint32_t *number);
+
+    /**
+     * Convenience setter: write button text directly from an integer.
+     * Sends the firmware's 3-parameter ButtonSeti() command.
+     */
+    bool setTexti(uint32_t value);
+
+    /**
+     * Convenience setter: write button text directly from a double/float.
+     * Sends the firmware's 3-parameter ButtonSetd() command.
+     */
+    bool setTextf(double value);
+
+    /* Missing getters covering the panel-side BtnG attributes. */
+    uint32_t Get_background_colorTo(uint32_t *number);
+    uint32_t Get_press_background_colorTo(uint32_t *number);
+    uint32_t Get_active(uint32_t *number);
+    uint32_t Get_font_size(uint32_t *number);
+    uint32_t Get_pen_width(uint32_t *number);
+    uint32_t Get_pen_color(uint32_t *number);
 
 };
 #endif /* #ifndef __AirButton_H__ */

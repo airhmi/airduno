@@ -51,10 +51,10 @@ bool AirTimer::setInterval(uint32_t value)
 bool AirTimer::enable(void)
 {
     String cmd;
-    
+
     cmd = "TmrS(";
     cmd += getObjName();
-    cmd += ",1";
+    cmd += ",Enable,1";
     cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
@@ -63,10 +63,10 @@ bool AirTimer::enable(void)
 bool AirTimer::disable(void)
 {
     String cmd;
-    
+
     cmd = "TmrS(";
     cmd += getObjName();
-    cmd += ",0";
+    cmd += ",Enable,0";
     cmd +=");";
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();

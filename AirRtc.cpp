@@ -17,9 +17,9 @@
 
 bool AirRtc::dateSet(int day,int month,int year)
 {
-    char sDay[10] = {0};
-    char sMonth[10] = {0};
-    char sYear[10] = {0};
+    char sDay[16] = {0};
+    char sMonth[16] = {0};
+    char sYear[16] = {0};
     
     utoa(day, sDay, 10);
     utoa(month, sMonth, 10);
@@ -41,8 +41,8 @@ bool AirRtc::dateSet(int day,int month,int year)
 
 bool AirRtc::timeSet(int hour,int min)
 {
-    char sHour[10] = {0};
-    char sMin[10] = {0};
+    char sHour[16] = {0};
+    char sMin[16] = {0};
     
     utoa(hour, sHour, 10);
     utoa(min, sMin, 10);

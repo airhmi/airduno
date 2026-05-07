@@ -23,7 +23,7 @@ AirProgressBar::AirProgressBar( const char *name)
 
 uint32_t AirProgressBar::Set_Value(uint32_t value)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(value, buf, 10);
@@ -38,10 +38,12 @@ uint32_t AirProgressBar::Set_Value(uint32_t value)
 
 uint32_t AirProgressBar::Set_Color(uint32_t value)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
-    
-    sprintf(buf,"%lu",value);
+
+    /* Renk panel'de signed int olarak saklanir.
+       %ld + (int32_t) cast ile bit pattern dogru parse edilir. */
+    sprintf(buf,"%ld",(int32_t)value);
     cmd = "PbS(";
     cmd += getObjName();
     cmd += ",Color,";
@@ -71,6 +73,62 @@ uint32_t AirProgressBar::Get_Color(uint32_t *value)
     cmd = "ProgressBarGet(";
     cmd += getObjName();
     cmd += ",Color,";
+    cmd += "NULL";
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetNumber(value);
+}
+
+/* ---------- Panel'in destekledigi ek ozellikler ---------- */
+
+uint32_t AirProgressBar::Set_BackgroundColor(uint32_t value)
+{
+    char buf[16] = {0};
+    String cmd;
+
+    sprintf(buf,"%ld",(int32_t)value);
+    cmd = "PbS(";
+    cmd += getObjName();
+    cmd += ",Background_Color,";
+    cmd += buf;
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetCommandFinished();
+}
+
+uint32_t AirProgressBar::Get_BackgroundColor(uint32_t *value)
+{
+    String cmd;
+    cmd = "ProgressBarGet(";
+    cmd += getObjName();
+    cmd += ",Background_Color,";
+    cmd += "NULL";
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetNumber(value);
+}
+
+uint32_t AirProgressBar::Set_BorderColor(uint32_t value)
+{
+    char buf[16] = {0};
+    String cmd;
+
+    sprintf(buf,"%ld",(int32_t)value);
+    cmd = "PbS(";
+    cmd += getObjName();
+    cmd += ",Border_Color,";
+    cmd += buf;
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetCommandFinished();
+}
+
+uint32_t AirProgressBar::Get_BorderColor(uint32_t *value)
+{
+    String cmd;
+    cmd = "ProgressBarGet(";
+    cmd += getObjName();
+    cmd += ",Border_Color,";
     cmd += "NULL";
     cmd +=");";
     sendCommand(cmd.c_str());

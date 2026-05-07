@@ -32,22 +32,35 @@ bool airInit(void);
 
 /**
  * Listen touch event and calling callbacks attached before.
- * 
- * Supports push and pop at present. 
  *
- * @param air_listen_list - index to AirHMI Components list. 
- * @return none. 
+ * Supports push and pop at present.
+ *
+ * @param air_listen_list - index to AirHMI Components list.
+ * @return none.
  *
  * @warning This function must be called repeatedly to response touch events
- *  from AirHMI touch panel. Actually, you should place it in your loop function. 
+ *  from AirHMI touch panel. Actually, you should place it in your loop function.
  */
 void airLoop(AirTouch *air_listen_list[]);
+
+/**
+ * Returns true if Arduino is currently registered with the panel/simulator
+ * (i.e. handshake completed and panel is sending Arduino-framed responses).
+ */
+bool airIsConnected(void);
+
+/**
+ * Force a non-blocking re-handshake attempt. Resets the connection flag
+ * and triggers an ArduinoReq() send on the next airLoop iteration.
+ * Useful if user code suspects connection has dropped.
+ */
+void airReconnect(void);
 
 /**
  * @}
  */
 
-bool recvRetNumber(uint32_t *number, uint32_t timeout = 100);
+bool recvRetNumber(uint32_t *number, uint32_t timeout = 1000);
 uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout = 100);
 void sendCommand(const char* cmd);
 bool recvRetCommandFinished(uint32_t timeout = 1000);

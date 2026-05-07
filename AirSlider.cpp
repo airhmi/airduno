@@ -21,7 +21,7 @@ AirSlider::AirSlider( const char *name)
 
 uint32_t AirSlider::Set_Value(uint32_t value)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(value, buf, 10);
@@ -36,10 +36,12 @@ uint32_t AirSlider::Set_Value(uint32_t value)
 
 uint32_t AirSlider::Set_Color(uint32_t value)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
-    
-    sprintf(buf,"%lu",value);
+
+    /* Renk panel'de signed int olarak saklanir (-1 = beyaz vb).
+       %ld + (int32_t) cast ile bit pattern dogru parse edilir. */
+    sprintf(buf,"%ld",(int32_t)value);
     cmd = "SlS(";
     cmd += getObjName();
     cmd += ",Color,";
@@ -69,6 +71,62 @@ uint32_t AirSlider::Get_Color(uint32_t *value)
     cmd = "SlGet(";
     cmd += getObjName();
     cmd += ",Color,";
+    cmd += "NULL";
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetNumber(value);
+}
+
+/* ---------- Panel'in destekledigi ek ozellikler ---------- */
+
+uint32_t AirSlider::Set_BackgroundColor(uint32_t value)
+{
+    char buf[16] = {0};
+    String cmd;
+
+    sprintf(buf,"%ld",(int32_t)value);
+    cmd = "SlS(";
+    cmd += getObjName();
+    cmd += ",Background_Color,";
+    cmd += buf;
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetCommandFinished();
+}
+
+uint32_t AirSlider::Get_BackgroundColor(uint32_t *value)
+{
+    String cmd;
+    cmd = "SlGet(";
+    cmd += getObjName();
+    cmd += ",Background_Color,";
+    cmd += "NULL";
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetNumber(value);
+}
+
+uint32_t AirSlider::Set_ThumbColor(uint32_t value)
+{
+    char buf[16] = {0};
+    String cmd;
+
+    sprintf(buf,"%ld",(int32_t)value);
+    cmd = "SlS(";
+    cmd += getObjName();
+    cmd += ",Thumb_Color,";
+    cmd += buf;
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetCommandFinished();
+}
+
+uint32_t AirSlider::Get_ThumbColor(uint32_t *value)
+{
+    String cmd;
+    cmd = "SlGet(";
+    cmd += getObjName();
+    cmd += ",Thumb_Color,";
     cmd += "NULL";
     cmd +=");";
     sendCommand(cmd.c_str());

@@ -43,6 +43,23 @@ uint32_t Get_Value(uint32_t *value);
 
 uint32_t Get_Color(uint32_t *value);
 
+/* ---------- Panel'in destekledigi ek ozellikler ---------- */
+
+/**
+ * Set/Get BACKGROUND_COLOR attribute (progress'in **bos** kismi —
+ * dolu kismin sagindaki arka plan).
+ * Renk signed int (orn. -65536 = kirmizi).
+ */
+uint32_t Set_BackgroundColor(uint32_t value);
+uint32_t Get_BackgroundColor(uint32_t *value);
+
+/**
+ * Set/Get BORDER_COLOR attribute (progress bar'in **kenar cizgisi**).
+ * Panel'de evepb->Pen_Color field'ina kaydedilir.
+ */
+uint32_t Set_BorderColor(uint32_t value);
+uint32_t Get_BorderColor(uint32_t *value);
+
 };
 
 /**

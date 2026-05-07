@@ -53,15 +53,28 @@ bool recvRetNumber(uint32_t *number, uint32_t timeout)
 {
 
     char buffer[100];
-    int len = 100;
+    int len = sizeof(buffer) - 1;   // recvRetString'in strncpy'si null koymadigi
+                                    // icin son byte daima '\0' kalsin.
+    uint16_t ret = 0;
+
+    if (!number)
+        return false;
 
     memset(buffer,0x00,sizeof(buffer));
 
-    recvRetString(buffer,len);
+    /* timeout PARAMETRESI artik recvRetString'e gecirilir (eskiden bu
+       deger goz ardi ediliyordu, default 100ms kullaniliyordu). Ayrica
+       Get_* metodlarinin default timeout'u 1000ms'ye yukseltildi (bkz.
+       AirHardware.h). Bu olmadan simulator yanitlari 100ms'den uzun
+       suren hallerde Arduino timeout edip 0 okuyordu. */
+    ret = recvRetString(buffer, len, timeout);
 
-    *number = atoi(buffer);
+    /* AVR Arduino'da atoi() 16-bit `int` donduruyor; -16728065 gibi renk
+       degerleri burada kesiliyordu. strtol() 32-bit ve isaretli (negatif
+       renk degerleri icin) dogru parse eder. */
+    *number = (uint32_t)strtol(buffer, NULL, 10);
 
-    return true;
+    return ret > 0;
 
 /*
     bool ret = false;
@@ -362,6 +375,28 @@ bool recvRetCommandFinished(uint32_t timeout)
 int airDunoConnect = 0;
 uint32_t airDunoSendTimeout = 0;
 
+/* ---------- Bagsanti watchdog ---------- */
+/* Panel/simulator'dan en son veri alindigi zaman. Cron icinde gelen
+   kucuk paketler bile (touch, framed yanitlar) bunu canli tutar. */
+static uint32_t airLastSeenMs = 0;
+/* Yeniden el sıkısma denemeleri arasi minimum sure (ms). */
+static const uint32_t AIR_RECONNECT_RETRY_MS = 5000;
+/* Bu sure boyunca panel'den hicbir veri gelmezse "disconnected" say. */
+static const uint32_t AIR_DISCONNECT_TIMEOUT_MS = 15000;
+
+bool airIsConnected(void)
+{
+    return airDunoConnect == 1;
+}
+
+void airReconnect(void)
+{
+    /* Connect flag'ini dusur, bir sonraki airLoop iterasyonu hemen
+       ArduinoReq() gonderebilsin. */
+    airDunoConnect = 0;
+    airDunoSendTimeout = millis() - AIR_RECONNECT_RETRY_MS - 1;
+}
+
 bool airInit(void)
 {
     int timeout = 1000;
@@ -448,8 +483,26 @@ void airLoop(AirTouch *air_listen_list[])
     uint32_t start;
     String temp = String("");
     uint16_t ret = 0;
-    int event; 
+    int event;
     int timeout = 1000;
+
+    /* ---------- Watchdog: bagsanti koparsa otomatik yeniden bagsla ----------
+       1) Connect flag aktif ama panel'den uzun suredir veri yoksa flag'i dusur.
+       2) Connect flag pasif iken periyodik ArduinoReq() gonder. Cevap geldiginde
+          (asagida AIR_CONNECT yakalandiginda) flag tekrar aktif olur. */
+    if (airDunoConnect == 1 && airLastSeenMs != 0 &&
+        (millis() - airLastSeenMs) > AIR_DISCONNECT_TIMEOUT_MS)
+    {
+        airDunoConnect = 0;
+        airDunoSendTimeout = millis() - AIR_RECONNECT_RETRY_MS - 1;
+    }
+
+    if (airDunoConnect == 0 &&
+        (millis() - airDunoSendTimeout) > AIR_RECONNECT_RETRY_MS)
+    {
+        airSerial.print("ArduinoReq();\n");
+        airDunoSendTimeout = millis();
+    }
 
 
 
@@ -457,12 +510,13 @@ void airLoop(AirTouch *air_listen_list[])
 
     
     while (airSerial.available() > 0)
-    {   
+    {
         //delay(10);
         c = airSerial.read();
-        
+        airLastSeenMs = millis();   /* panel canli — herhangi bir veri geldi */
+
 		//airSerial.println("HERE1");
-		
+
         if (AIR_RET_EVENT_TOUCH_HEAD == c)
         {
             //airSerial.println("HERE2");
@@ -475,8 +529,18 @@ void airLoop(AirTouch *air_listen_list[])
                 {
                     event = airSerial.read();
                     ret = true;
-                    break;  
+                    break;
                 }
+            }
+
+            /* Re-handshake yaniti: panel ArduinoReq()'a karsilik
+               AIR_RET_EVENT_TOUCH_HEAD ardindan AIR_CONNECT gonderir.
+               Connect olmamissa bunu yakalayip flag'i ayarla. */
+            if (airDunoConnect == 0 && ret == true && event == AIR_CONNECT)
+            {
+                airDunoConnect = 1;
+                airSerial.print("FunctionsResponseSet(1);");
+                continue;
             }
 
             if( ret == false )

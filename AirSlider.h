@@ -42,7 +42,24 @@ uint32_t Set_Color(uint32_t value);
 uint32_t Get_Value(uint32_t *value);
 
 uint32_t Get_Color(uint32_t *value);
-	
+
+/* ---------- Panel'in destekledigi ek ozellikler ---------- */
+
+/**
+ * Set/Get BACKGROUND_COLOR attribute (slider track'in **sonrasi** —
+ * thumb'in sagindaki bos kisim).
+ * Renk signed int (orn. -65536 = kirmizi).
+ */
+uint32_t Set_BackgroundColor(uint32_t value);
+uint32_t Get_BackgroundColor(uint32_t *value);
+
+/**
+ * Set/Get THUMB_COLOR attribute (slider'in ortasindaki **yuvarlak** —
+ * surukleyici dugme).
+ */
+uint32_t Set_ThumbColor(uint32_t value);
+uint32_t Get_ThumbColor(uint32_t *value);
+
 };
 /**
  * @}

@@ -58,7 +58,24 @@ bool Get_radius(uint32_t *number);
 bool Get_color(uint32_t *number);
 
 bool Get_value(uint32_t *number);
-		
+
+/* ---------- Panel'in destekledigi ek ozellikler ---------- */
+
+/**
+ * Set/Get NEEDLE_COLOR attribute (ibre rengi).
+ * Panel'de evegauge->Pen_Color field'ina kaydedilir.
+ * Renk signed int (orn. -65536 = kirmizi).
+ */
+bool Set_needleColor(uint32_t number);
+bool Get_needleColor(uint32_t *number);
+
+/**
+ * Set/Get NEEDLE_CIRCLE_COLOR attribute (ibre merkez yuvarlak rengi).
+ * Panel'de evegauge->NeedleCenterColor field'ina kaydedilir.
+ */
+bool Set_needleCenterColor(uint32_t number);
+bool Get_needleCenterColor(uint32_t *number);
+
 };
 
 /**

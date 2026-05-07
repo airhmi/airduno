@@ -23,7 +23,7 @@ AirShape::AirShape( const char *name)
 
 bool AirShape::Set_active(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -38,7 +38,7 @@ bool AirShape::Set_active(uint32_t number)
 
 bool AirShape::Set_left(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -54,7 +54,7 @@ bool AirShape::Set_left(uint32_t number)
 
 bool AirShape::Set_top(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -69,7 +69,7 @@ bool AirShape::Set_top(uint32_t number)
 
 bool AirShape::Set_width(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -84,7 +84,7 @@ bool AirShape::Set_width(uint32_t number)
 
 bool AirShape::Set_height(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -151,10 +151,13 @@ uint32_t AirShape::Get_height(uint32_t *number)
 
 uint32_t AirShape::Get_Active(uint32_t *number)
 {
+    /* BUG fix: onceden ",Vis," gonderiliyordu (panel'de Shape icin
+       VIS attribute YOK — sadece ACTIVE var). Get_Active hep null/0
+       donuyordu. Simdi panel'in destekledigi ",Active," gonderiliyor. */
     String cmd;
     cmd = "ShapeGet(";
     cmd += getObjName();
-    cmd += ",Vis,";
+    cmd += ",Active,";
     cmd += "NULL";
     cmd +=");";
     sendCommand(cmd.c_str());

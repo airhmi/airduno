@@ -56,6 +56,47 @@ uint32_t Set_top(uint32_t number);
 uint32_t Set_width(uint32_t number);
 
 uint32_t Set_height(uint32_t number);
+
+/* ---------- Panel'in destekledigi ek ozellikler ---------- */
+
+/**
+ * Eksik Get_active — Set_active'in karsiligi. (panel ACTIVE attribute)
+ */
+uint32_t Get_active(uint32_t *number);
+
+/**
+ * Set/Get BLEND_COLOR (resim uzerine renk filtresi/tinting).
+ * Renk signed int, panel'de Blend_Color field'inda saklanir.
+ */
+uint32_t Set_blendColor(uint32_t number);
+uint32_t Get_blendColor(uint32_t *number);
+
+/**
+ * Set/Get ROTATIONANGLE (derece, 0..359).
+ */
+uint32_t Set_rotationAngle(uint32_t number);
+uint32_t Get_rotationAngle(uint32_t *number);
+
+/**
+ * Set/Get ROTATIONCENTERLEFT, ROTATIONCENTERTOP (pivot noktasi).
+ */
+uint32_t Set_rotationCenterLeft(uint32_t number);
+uint32_t Get_rotationCenterLeft(uint32_t *number);
+uint32_t Set_rotationCenterTop(uint32_t number);
+uint32_t Get_rotationCenterTop(uint32_t *number);
+
+/**
+ * Set/Get PUSHPULL (basili tutma modu, AirButton ile ayni mantik).
+ */
+uint32_t Set_pushpull(uint32_t number);
+uint32_t Get_pushpull(uint32_t *number);
+
+/**
+ * IMAGE_FILE_REPLACE: panel'in image data'sini runtime'da degistirir
+ * (replace path).
+ */
+uint32_t Set_imageFileReplace(String imgName);
+
 };
 
 #endif /* #ifndef __AIRPICTURE_H__ */

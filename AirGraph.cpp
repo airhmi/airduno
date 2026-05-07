@@ -23,8 +23,8 @@ AirGraph::AirGraph(const char *name)
 
 bool AirGraph::addValue(uint32_t value, uint32_t value2)
 {
-    char buf[10] = {0};
-	char buf2[10] = {0};
+    char buf[16] = {0};
+	char buf2[16] = {0};
     String cmd;
     
     sprintf(buf,"%lu",value);
@@ -43,7 +43,7 @@ bool AirGraph::addValue(uint32_t value, uint32_t value2)
 
 bool AirGraph::Set_line_color(uint32_t value,String buffer)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
 	String cmd;
     
    	sprintf(buf,"%lu",value);

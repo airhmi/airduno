@@ -22,7 +22,7 @@ AirGauge::AirGauge(const char *name)
 
 bool AirGauge::Set_visible(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -37,7 +37,7 @@ bool AirGauge::Set_visible(uint32_t number)
 
 bool AirGauge::Set_left(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -52,7 +52,7 @@ bool AirGauge::Set_left(uint32_t number)
 
 bool AirGauge::Set_top(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -67,7 +67,7 @@ bool AirGauge::Set_top(uint32_t number)
 
 bool AirGauge::Set_radius(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -82,10 +82,12 @@ bool AirGauge::Set_radius(uint32_t number)
 
 bool AirGauge::Set_color(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
-    
-    sprintf(buf,"%lu",number);
+
+    /* Renk panel'de signed int olarak saklanir (-1 = beyaz vb).
+       %ld + (int32_t) cast ile bit pattern dogru parse edilir. */
+    sprintf(buf,"%ld",(int32_t)number);
     cmd = "GgS(";
     cmd += getObjName();
     cmd += ",Color,";
@@ -98,7 +100,7 @@ bool AirGauge::Set_color(uint32_t number)
 
 bool AirGauge::Set_value(uint32_t number)
 {
-    char buf[10] = {0};
+    char buf[16] = {0};
     String cmd;
     
     utoa(number, buf, 10);
@@ -178,6 +180,62 @@ bool AirGauge::Get_value(uint32_t *number)
     cmd = "GgG(";
     cmd += getObjName();
     cmd += ",Value,";
+    cmd += "NULL";
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetNumber(number);
+}
+
+/* ---------- Panel'in destekledigi ek ozellikler ---------- */
+
+bool AirGauge::Set_needleColor(uint32_t number)
+{
+    char buf[16] = {0};
+    String cmd;
+
+    sprintf(buf,"%ld",(int32_t)number);
+    cmd = "GgS(";
+    cmd += getObjName();
+    cmd += ",Needle_Color,";
+    cmd += buf;
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetCommandFinished();
+}
+
+bool AirGauge::Get_needleColor(uint32_t *number)
+{
+    String cmd;
+    cmd = "GgG(";
+    cmd += getObjName();
+    cmd += ",Needle_Color,";
+    cmd += "NULL";
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetNumber(number);
+}
+
+bool AirGauge::Set_needleCenterColor(uint32_t number)
+{
+    char buf[16] = {0};
+    String cmd;
+
+    sprintf(buf,"%ld",(int32_t)number);
+    cmd = "GgS(";
+    cmd += getObjName();
+    cmd += ",Needle_Circle_Color,";
+    cmd += buf;
+    cmd +=");";
+    sendCommand(cmd.c_str());
+    return recvRetCommandFinished();
+}
+
+bool AirGauge::Get_needleCenterColor(uint32_t *number)
+{
+    String cmd;
+    cmd = "GgG(";
+    cmd += getObjName();
+    cmd += ",Needle_Circle_Color,";
     cmd += "NULL";
     cmd +=");";
     sendCommand(cmd.c_str());
