@@ -35,6 +35,53 @@
 #define AIR_CONNECT                     (0x1C)
 
 
+/* ========================================================================
+ * Pending touch event buffer
+ *
+ * Problem: Arduino setText/Set/VarSet komut gonderdikten sonra
+ * recvRetCommandFinished veya recvRetString icinde belirli pattern bekler.
+ * Bu sirada panel kullanicidan touch alirsa AIR_RET_EVENT_TOUCH_HEAD ile
+ * baslayan event Arduino RX bufferina dusuyor. recvRet state makinesi
+ * beklenmeyen byte gelince airSerial.read ile yutuyor -> event kayboluyor.
+ *
+ * Cozum: recvRet state==0 iken AIR_RET_EVENT_TOUCH_HEAD goruunce o ve
+ * sonraki byteleri newline gelene kadar global pending buffera kopyala.
+ * airLoop her cagrida once bu bufferi parse et ve AirTouch::iterate cagir.
+ * ======================================================================== */
+#define AIR_PENDING_BUF_SIZE  40
+static uint8_t pendingEventBuf[AIR_PENDING_BUF_SIZE];
+static uint8_t pendingEventLen = 0;
+static bool    pendingEventCapturing = false;
+static bool    pendingEventReady     = false;
+
+/* Beklenmeyen byte recvRet tarafindan gormesi durumunda burayi cagir.
+ * AIR_RET_EVENT_TOUCH_HEAD gorulurse capture baslar, sonraki byteler
+ * newline gelene kadar buffera kopyalanir. true donerse byte tuketildi. */
+static bool capturePendingTouchByte(uint8_t c)
+{
+    if (!pendingEventCapturing)
+    {
+        if (c == AIR_RET_EVENT_TOUCH_HEAD && !pendingEventReady)
+        {
+            pendingEventCapturing = true;
+            pendingEventLen       = 0;
+            pendingEventBuf[pendingEventLen++] = c;
+            return true;
+        }
+        return false;
+    }
+    /* capturing aktif */
+    if (pendingEventLen < AIR_PENDING_BUF_SIZE)
+        pendingEventBuf[pendingEventLen++] = c;
+    if (c == '\n' || pendingEventLen >= AIR_PENDING_BUF_SIZE)
+    {
+        pendingEventCapturing = false;
+        pendingEventReady     = true;
+    }
+    return true;
+}
+
+
 #ifdef AIRHMI_ARDUINO_SOFTWARE_SERIAL	 
 	SoftwareSerial airSerial(RX_PIN, TX_PIN);//arduino için software tanımlamada bu kod açılır
 #endif
@@ -237,38 +284,45 @@ uint16_t recvRetString(char *buffer, uint16_t len, uint32_t timeout)
     start = millis();
     while (millis() - start <= timeout && loop)
     {
+        if (!airSerial.available())
+            continue;
 
-        while (airSerial.available())
+        int peeked = airSerial.peek();
+
+        /* state==0 iken touch event head gelirse buffer'da birak. */
+        if (state == 0 && (uint8_t)peeked == AIR_RET_EVENT_TOUCH_HEAD)
+            break;
+
+        c = (uint8_t)airSerial.read();
+
+        if (state == 0)
         {
-            c = airSerial.read();
-
-            if(state == 0 )
+            if (0x01 == c) state++;
+            /* bilinmeyen byte: cope */
+        }
+        else if (state == 1)
+        {
+            if (0x7E == c) state++;
+            else           temp += (char)c;
+        }
+        else if (state == 2)
+        {
+            if (0x6F == c)
             {
-                if (0x01 == c)
-                    state++;  
+                state++;
+                loop = false;
+                break;
             }
-            else if(state == 1 )
+            else
             {
-                if (0x7E == c)
-                    state++;  
-                else
-                    temp += (char)c;  
+                /* 0x6F gelmedi - 0x7E once normal data idi. */
+                temp += (char)0x7E;
+                temp += (char)c;
+                state = 1;
             }
-            else if(state == 2 )
-            { 
-                if (0x6F == c)
-                {
-                    state++; 
-					loop = false;					
-                    break;
-                }
-            }
-
-            
-
         }
     }
-    
+
 
 
     if( state == 3 )
@@ -304,15 +358,16 @@ __return:
  */
 void sendCommand(const char* cmd)
 {
+    /* Bu fonksiyon eskiden buffer'i sessizce temizliyordu (event byteleri
+       cope giderdi). Simdi buffer'daki her byte'i capturePendingTouchByte'a
+       sokuyoruz - 0x65 ile baslayan touch eventleri kaybolmaz. */
     while (airSerial.available())
     {
-        airSerial.read();
+        uint8_t c = airSerial.read();
+        capturePendingTouchByte(c);
     }
-    
+
     airSerial.print(cmd);
-    //airSerial.write(0xFF);
-    //airSerial.write(0xFF);
-    //airSerial.write(0xFF);
 }
 
 
@@ -326,46 +381,47 @@ void sendCommand(const char* cmd)
  *
  */
 bool recvRetCommandFinished(uint32_t timeout)
-{    
-    uint16_t ret = 0;
-    String temp = String("");
-    uint8_t c = 0;
+{
+    bool ret = false;
+    int peeked;
     long start;
     int state = 0;
-    bool loop = true;
 
     start = millis();
-    while (millis() - start <= timeout && loop)
+    while (millis() - start <= timeout && state < 4)
     {
+        if (!airSerial.available())
+            continue;
 
-        while (airSerial.available())
+        peeked = airSerial.peek();
+
+        /* Touch event head: cevabin parcasi degil. Buffer'da birak ki
+           airLoop normal flow'unda parse etsin. Hemen don, recvRet'in false
+           donmesi setText icin sorun olmaz (cagiran return degerini
+           kullanmiyor). */
+        if ((uint8_t)peeked == AIR_RET_EVENT_TOUCH_HEAD)
+            return false;
+
+        /* state-based pattern matching */
+        if (state == 0)
         {
-            c = airSerial.read();
-            if(state == 0 )
-            {                
-                if ('O' == c)
-                    state++;    
-            }
-            else if(state == 1 )
-            {
-                if ('K' == c)
-                    state++;    
-            }
-            else if(state == 2 )
-            {
-                if (0x0a == c)
-                    state++;    
-            }            
-            else if(state == 3 )
-            {
-                if (0x0d == c)
-                {
-                    ret = true;
-                    loop = false;
-                    break;
-                }   
-            }
-
+            if ('O' == peeked) { airSerial.read(); state++; }
+            else                 airSerial.read();   /* bilinmeyen byte, cope */
+        }
+        else if (state == 1)
+        {
+            if ('K' == peeked) { airSerial.read(); state++; }
+            else               { state = 0; }
+        }
+        else if (state == 2)
+        {
+            if (0x0a == peeked) { airSerial.read(); state++; }
+            else                { state = 0; }
+        }
+        else if (state == 3)
+        {
+            if (0x0d == peeked) { airSerial.read(); state++; ret = true; }
+            else                { state = 0; }
         }
     }
 
@@ -485,6 +541,33 @@ void airLoop(AirTouch *air_listen_list[])
     uint16_t ret = 0;
     int event;
     int timeout = 1000;
+
+    /* ---------- Pending touch event: recvRet sirasinda yakalanmis 0x65
+       paketleri varsa burada normal event mantigiyla isle. ---------- */
+    if (pendingEventReady && pendingEventLen >= 3 &&
+        pendingEventBuf[0] == AIR_RET_EVENT_TOUCH_HEAD)
+    {
+        int     pe_event = pendingEventBuf[1];
+        String  pe_temp  = String("");
+        for (uint8_t pi = 2; pi < pendingEventLen; pi++)
+        {
+            uint8_t pc = pendingEventBuf[pi];
+            if (pc == '\n') break;
+            pe_temp += (char)pc;
+        }
+        airLastSeenMs = millis();
+        AirTouch::iterate(air_listen_list, 0, 0, pe_temp, pe_event);
+        pendingEventLen   = 0;
+        pendingEventReady = false;
+    }
+    /* Half-captured (newline gelmedi) durumunu da temizle ki bir sonraki
+       0x65 baslangici icin yer olsun. */
+    /* (apostrof yok) */
+    if (pendingEventReady)
+    {
+        pendingEventLen   = 0;
+        pendingEventReady = false;
+    }
 
     /* ---------- Watchdog: bagsanti koparsa otomatik yeniden bagsla ----------
        1) Connect flag aktif ama panel'den uzun suredir veri yoksa flag'i dusur.
